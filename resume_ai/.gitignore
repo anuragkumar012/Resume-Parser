@@ -1,0 +1,29 @@
+# Python compiler caches
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Pytest / cache directories
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Databases (SQLite / Local databases)
+*.db
+*.sqlite3
+*.sqlite
+
+# Local configuration / environment files
+.env
+.env.local
+.env.*.local
+*.env
+
+# Operating System files
+.DS_Store
+Thumbs.db
+
+# IDEs and editors
+.vscode/
+.idea/
+*.sw?
