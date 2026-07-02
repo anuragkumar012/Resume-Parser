@@ -4,6 +4,7 @@ import JobDescriptionList from './components/JobDescriptionList';
 import UploadPanel from './components/UploadPanel';
 import ReportView from './components/ReportView';
 import EvaluationsList from './components/EvaluationsList';
+import ConfirmationModal from './components/ConfirmationModal';
 import logoSvg from './assets/logo.svg';
 
 const API_URL = `http://${window.location.hostname}:8000`;
@@ -13,6 +14,13 @@ function App() {
   const [jobs, setJobs] = useState([]);
   const [reports, setReports] = useState([]);
   const [selectedReport, setSelectedReport] = useState(null);
+  const [confirmModal, setConfirmModal] = useState({
+    isOpen: false,
+    title: '',
+    message: '',
+    type: 'confirm',
+    onConfirm: null,
+  });
   const [selectedJobFilter, setSelectedJobFilter] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [theme, setTheme] = useState(() => {
@@ -99,6 +107,120 @@ function App() {
     } else {
       setActiveTab('evaluations');
     }
+  };
+
+  const handleDeleteJob = (jobId, jobTitle) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Delete Job Role',
+      message: `Are you sure you want to delete the job role '${jobTitle || 'Untitled Role'}'? This will also cascade delete all candidate evaluation records matching this job description.`,
+      onConfirm: async () => {
+        setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+        try {
+          const res = await fetch(`${API_URL}/jobs/${jobId}`, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            if (selectedReport?.job_id === jobId) {
+              setSelectedReport(null);
+              setActiveTab('jobs');
+            }
+            if (parseInt(selectedJobFilter) === jobId) {
+              setSelectedJobFilter('');
+            }
+            fetchJobs();
+            fetchReports();
+            setTimeout(() => {
+              setConfirmModal({
+                isOpen: true,
+                type: 'success',
+                title: 'Success',
+                message: `Job role '${jobTitle || 'Untitled Role'}' has been deleted successfully.`,
+                onConfirm: null
+              });
+            }, 100);
+          } else {
+            const errData = await res.json();
+            setTimeout(() => {
+              setConfirmModal({
+                isOpen: true,
+                type: 'error',
+                title: 'Deletion Failed',
+                message: `Failed to delete job: ${errData.detail || 'Unknown error'}`,
+                onConfirm: null
+              });
+            }, 100);
+          }
+        } catch (err) {
+          console.error('Error deleting job:', err);
+          setTimeout(() => {
+            setConfirmModal({
+              isOpen: true,
+              type: 'error',
+              title: 'Error',
+              message: `Error deleting job: ${err.message}`,
+              onConfirm: null
+            });
+          }, 100);
+        }
+      }
+    });
+  };
+
+  const handleDeleteReport = (reportId, candidateName) => {
+    setConfirmModal({
+      isOpen: true,
+      type: 'confirm',
+      title: 'Delete Evaluation Record',
+      message: `Are you sure you want to delete the candidate evaluation record for ${candidateName || 'Unknown Candidate'}? This action cannot be undone.`,
+      onConfirm: async () => {
+        setConfirmModal((prev) => ({ ...prev, isOpen: false }));
+        try {
+          const res = await fetch(`${API_URL}/reports/${reportId}`, {
+            method: 'DELETE',
+          });
+          if (res.ok) {
+            if (selectedReport?.id === reportId) {
+              setSelectedReport(null);
+              setActiveTab('evaluations');
+            }
+            fetchReports();
+            setTimeout(() => {
+              setConfirmModal({
+                isOpen: true,
+                type: 'success',
+                title: 'Success',
+                message: `Evaluation record for ${candidateName || 'the candidate'} has been deleted successfully.`,
+                onConfirm: null
+              });
+            }, 100);
+          } else {
+            const errData = await res.json();
+            setTimeout(() => {
+              setConfirmModal({
+                isOpen: true,
+                type: 'error',
+                title: 'Deletion Failed',
+                message: `Failed to delete evaluation: ${errData.detail || 'Unknown error'}`,
+                onConfirm: null
+              });
+            }, 100);
+          }
+        } catch (err) {
+          console.error('Error deleting report:', err);
+          setTimeout(() => {
+            setConfirmModal({
+              isOpen: true,
+              type: 'error',
+              title: 'Error',
+              message: `Error deleting evaluation: ${err.message}`,
+              onConfirm: null
+            });
+          }, 100);
+        }
+      }
+    });
   };
 
   return (
@@ -244,6 +366,7 @@ function App() {
             onViewReport={handleViewReport}
             onFilterChange={setSelectedJobFilter}
             selectedJobFilter={selectedJobFilter}
+            onDeleteReport={handleDeleteReport}
           />
         )}
 
@@ -251,6 +374,7 @@ function App() {
           <JobDescriptionList
             jobs={jobs}
             onJobAdded={fetchJobs}
+            onDeleteJob={handleDeleteJob}
             API_URL={API_URL}
           />
         )}
@@ -274,6 +398,14 @@ function App() {
           />
         )}
       </main>
+      <ConfirmationModal
+        isOpen={confirmModal.isOpen}
+        title={confirmModal.title}
+        message={confirmModal.message}
+        type={confirmModal.type}
+        onConfirm={confirmModal.onConfirm}
+        onCancel={() => setConfirmModal((prev) => ({ ...prev, isOpen: false }))}
+      />
     </div>
   );
 }

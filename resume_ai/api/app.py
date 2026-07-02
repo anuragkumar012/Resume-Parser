@@ -944,3 +944,18 @@ def api_get_report_by_id(report_id: int, db: Session = Depends(get_db)):
     full_report["job_id"] = r.job_id
     return full_report
 
+@app.delete("/jobs/{job_id}", summary="Delete Job Description and its Match Reports")
+def api_delete_job(job_id: int, db: Session = Depends(get_db)):
+    """Deletes a job description and cascades deletion to all associated match reports."""
+    success = crud.delete_job_description(db, job_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Job description not found")
+    return {"status": "success", "message": f"Job description {job_id} deleted successfully."}
+
+@app.delete("/reports/{report_id}", summary="Delete Match Report")
+def api_delete_report(report_id: int, db: Session = Depends(get_db)):
+    """Deletes a specific candidate evaluation match report."""
+    success = crud.delete_match_report(db, report_id)
+    if not success:
+        raise HTTPException(status_code=404, detail="Match report not found")
+    return {"status": "success", "message": f"Match report {report_id} deleted successfully."}

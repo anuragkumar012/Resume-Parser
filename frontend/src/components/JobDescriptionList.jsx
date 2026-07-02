@@ -1,11 +1,17 @@
 import React, { useState } from 'react';
 
-export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
+export default function JobDescriptionList({ jobs, onJobAdded, onDeleteJob, API_URL }) {
   const [isAdding, setIsAdding] = useState(false);
   const [title, setTitle] = useState('');
   const [rawText, setRawText] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [selectedJob, setSelectedJob] = useState(null);
+
+  React.useEffect(() => {
+    if (selectedJob && !jobs.some(j => j.id === selectedJob.id)) {
+      setSelectedJob(null);
+    }
+  }, [jobs, selectedJob]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -127,15 +133,43 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                       borderRadius: '0.5rem',
                       border: selectedJob?.id === job.id ? '1px solid var(--border-glow)' : '1px solid var(--border-color)',
                       background: selectedJob?.id === job.id ? 'var(--tag-bg)' : 'var(--input-bg)',
+                      display: 'flex',
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      gap: '0.5rem',
                     }}
                     onClick={() => setSelectedJob(job)}
                   >
-                    <div style={{ fontWeight: 600, color: 'var(--text-highlight)', fontSize: '0.95rem' }}>
-                      {job.title}
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ fontWeight: 600, color: 'var(--text-highlight)', fontSize: '0.95rem', textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+                        {job.title}
+                      </div>
+                      <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
+                        Company: {job.parsed_json?.company || 'N/A'}
+                      </div>
                     </div>
-                    <div style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginTop: '0.25rem' }}>
-                      Company: {job.parsed_json?.company || 'N/A'}
-                    </div>
+                    <button
+                      type="button"
+                      className="btn btn-danger"
+                      style={{
+                        padding: '0.375rem',
+                        borderRadius: '0.25rem',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        flexShrink: 0,
+                      }}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDeleteJob(job.id, job.title);
+                      }}
+                      title={`Delete ${job.title}`}
+                    >
+                      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <polyline points="3 6 5 6 21 6"></polyline>
+                        <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                      </svg>
+                    </button>
                   </div>
                 ))}
                 {jobs.length === 0 && (

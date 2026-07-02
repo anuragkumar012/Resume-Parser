@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomDropdown from './CustomDropdown';
 
-export default function EvaluationsList({ jobs, reports, onViewReport, onFilterChange, selectedJobFilter }) {
+export default function EvaluationsList({ jobs, reports, onViewReport, onFilterChange, selectedJobFilter, onDeleteReport }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEligibilityFilter, setSelectedEligibilityFilter] = useState('');
   const [selectedScoreFilter, setSelectedScoreFilter] = useState('');
@@ -232,13 +232,20 @@ export default function EvaluationsList({ jobs, reports, onViewReport, onFilterC
                     <td style={{ fontSize: '0.85rem', color: 'var(--text-muted)' }}>
                       Skills: {Math.round(report.skill_match)}% • Exp: {Math.round(report.experience_match)}%
                     </td>
-                    <td>
+                    <td style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                       <button
                         className="btn btn-secondary"
                         style={{ padding: '0.375rem 0.75rem', fontSize: '0.8rem' }}
                         onClick={() => onViewReport(report.id)}
                       >
                         Scorecard
+                      </button>
+                      <button
+                        className="btn btn-danger"
+                        style={{ padding: '0.375rem 0.75rem', fontSize: '0.8rem' }}
+                        onClick={() => onDeleteReport(report.id, report.candidate_name)}
+                      >
+                        Delete
                       </button>
                     </td>
                   </tr>

@@ -120,3 +120,20 @@ def create_match_report(db: Session, candidate_id: int, job_id: int, ats_score: 
     db.commit()
     db.refresh(db_report)
     return db_report
+
+def delete_job_description(db: Session, job_id: int) -> bool:
+    db_jd = db.query(models.JobDescriptionDB).filter(models.JobDescriptionDB.id == job_id).first()
+    if db_jd:
+        db.delete(db_jd)
+        db.commit()
+        return True
+    return False
+
+def delete_match_report(db: Session, report_id: int) -> bool:
+    db_report = db.query(models.MatchReportDB).filter(models.MatchReportDB.id == report_id).first()
+    if db_report:
+        db.delete(db_report)
+        db.commit()
+        return True
+    return False
+
