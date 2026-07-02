@@ -13,6 +13,26 @@ function App() {
   const [selectedReport, setSelectedReport] = useState(null);
   const [selectedJobFilter, setSelectedJobFilter] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const [theme, setTheme] = useState(() => {
+    return localStorage.getItem('theme') || 'dark';
+  });
+
+  const toggleTheme = () => {
+    setTheme((prev) => {
+      const next = prev === 'dark' ? 'light' : 'dark';
+      localStorage.setItem('theme', next);
+      return next;
+    });
+  };
+
+  useEffect(() => {
+    const root = window.document.documentElement;
+    if (theme === 'light') {
+      root.classList.add('light-theme');
+    } else {
+      root.classList.remove('light-theme');
+    }
+  }, [theme]);
 
   // Fetch initial data
   const fetchJobs = async () => {
@@ -128,6 +148,19 @@ function App() {
               <line x1="12" y1="3" x2="12" y2="15" />
             </svg>
             Upload & Match
+          </button>
+
+          <button
+            className="tab-btn"
+            style={{
+              marginLeft: '1rem',
+              background: 'var(--theme-btn-bg)',
+              color: 'var(--theme-btn-text)',
+              border: '1px solid var(--border-color)',
+            }}
+            onClick={toggleTheme}
+          >
+            {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
           </button>
         </nav>
       </header>

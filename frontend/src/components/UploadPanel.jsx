@@ -154,7 +154,7 @@ export default function UploadPanel({ jobs, onAnalysisComplete, API_URL }) {
             ))}
           </select>
           {jobs.length === 0 && (
-            <span style={{ fontSize: '0.8rem', color: 'var(--color-warning)' }}>
+            <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
               No Job Descriptions found. Please add a Job Role first.
             </span>
           )}
@@ -230,7 +230,7 @@ export default function UploadPanel({ jobs, onAnalysisComplete, API_URL }) {
                     style={{
                       background: 'transparent',
                       border: 'none',
-                      color: 'var(--color-danger)',
+                      color: 'var(--text-muted)',
                       cursor: 'pointer',
                     }}
                     onClick={() => removeFile(idx)}

@@ -63,7 +63,7 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Total Evaluations</span>
             <div className="stat-val">{stats.totalResumes}</div>
           </div>
-          <span className="stat-icon" style={{ color: 'var(--color-primary)' }}>📄</span>
+          <span className="stat-icon" style={{ color: 'var(--text-highlight)' }}>📄</span>
         </div>
         
         {/* Stat 2 */}
@@ -72,27 +72,27 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Job Roles Configured</span>
             <div className="stat-val">{stats.activeJobs}</div>
           </div>
-          <span className="stat-icon" style={{ color: 'var(--color-secondary)' }}>💼</span>
+          <span className="stat-icon" style={{ color: 'var(--text-highlight)' }}>💼</span>
         </div>
 
         {/* Stat 3 */}
         <div className="card stat-card">
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Average ATS Score</span>
-            <div className="stat-val" style={{ color: stats.averageAts >= 70 ? 'var(--color-success)' : 'var(--text-highlight)' }}>
+            <div className="stat-val" style={{ color: 'var(--text-highlight)' }}>
               {stats.averageAts}%
             </div>
           </div>
-          <span className="stat-icon" style={{ color: 'var(--color-success)' }}>📈</span>
+          <span className="stat-icon" style={{ color: 'var(--text-highlight)' }}>📈</span>
         </div>
 
         {/* Stat 4 */}
         <div className="card stat-card">
           <div>
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>Highly Eligible (70+)</span>
-            <div className="stat-val" style={{ color: 'var(--color-accent)' }}>{stats.highlyEligible}</div>
+            <div className="stat-val" style={{ color: 'var(--text-highlight)' }}>{stats.highlyEligible}</div>
           </div>
-          <span className="stat-icon" style={{ color: 'var(--color-accent)' }}>🏆</span>
+          <span className="stat-icon" style={{ color: 'var(--text-highlight)' }}>🏆</span>
         </div>
       </div>
 
@@ -143,9 +143,7 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
             <tbody>
               {filteredReports.map((report) => {
                 // Score color indicator
-                let scoreColor = 'var(--color-danger)';
-                if (report.ats_score >= 70) scoreColor = 'var(--color-success)';
-                else if (report.ats_score >= 50) scoreColor = 'var(--color-warning)';
+                let scoreColor = 'var(--text-highlight)';
 
                 // Eligibility Badge
                 let eligibilityBadge = 'badge-danger';

@@ -11,9 +11,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
   const kwAnalysis = reportData.keyword_analysis || {};
 
   // Score colors
-  let scoreColor = 'var(--color-danger)';
-  if (reportData.ats_score >= 70) scoreColor = 'var(--color-success)';
-  else if (reportData.ats_score >= 50) scoreColor = 'var(--color-warning)';
+  const scoreColor = 'var(--text-highlight)';
 
   // Eligibility Status Banner
   let eligClass = 'badge-danger';
@@ -70,8 +68,8 @@ export default function ReportView({ reportData, onBack, API_URL }) {
         {/* ATS Score Card */}
         <div className="card" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: '1rem' }}>
           <h4 style={{ fontSize: '1rem', color: 'var(--text-muted)' }}>ATS Match Rating</h4>
-          <div className="score-circle" style={{ borderColor: scoreColor, boxShadow: `0 0 15px ${scoreColor}40` }}>
-            <span className="score-circle-value" style={{ color: scoreColor }}>
+          <div className="score-circle">
+            <span className="score-circle-value" style={{ color: 'var(--text-highlight)' }}>
               {Math.round(reportData.ats_score)}
             </span>
             <span className="score-circle-label">out of 100</span>
@@ -115,7 +113,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.skill_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.skill_match}%`, backgroundColor: 'var(--color-primary)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.skill_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
             </div>
           </div>
 
@@ -126,7 +124,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.experience_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.experience_match}%`, backgroundColor: 'var(--color-secondary)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.experience_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
             </div>
           </div>
 
@@ -137,7 +135,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.education_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.education_match}%`, backgroundColor: 'var(--color-accent)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.education_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
             </div>
           </div>
 
@@ -148,7 +146,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.semantic_score)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.semantic_score}%`, backgroundColor: 'var(--color-success)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.semantic_score}%`, backgroundColor: 'var(--text-highlight)' }}></div>
             </div>
           </div>
         </div>
@@ -179,7 +177,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               {info.linkedin && (
                 <div>
                   <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.8rem' }}>LinkedIn</span>
-                  <a href={info.linkedin} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'none', wordBreak: 'break-all' }}>
+                  <a href={info.linkedin} target="_blank" rel="noreferrer" style={{ color: 'var(--text-highlight)', textDecoration: 'underline', wordBreak: 'break-all' }}>
                     Profile Link
                   </a>
                 </div>
@@ -187,7 +185,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               {info.github && (
                 <div>
                   <span style={{ color: 'var(--text-muted)', display: 'block', fontSize: '0.8rem' }}>GitHub</span>
-                  <a href={info.github} target="_blank" rel="noreferrer" style={{ color: 'var(--color-primary)', textDecoration: 'none', wordBreak: 'break-all' }}>
+                  <a href={info.github} target="_blank" rel="noreferrer" style={{ color: 'var(--text-highlight)', textDecoration: 'underline', wordBreak: 'break-all' }}>
                     Repository Link
                   </a>
                 </div>
@@ -203,7 +201,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
             
             {/* Strengths */}
             <div style={{ marginBottom: '1rem' }}>
-              <span style={{ color: 'var(--color-success)', fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.35rem' }}>
+              <span style={{ color: 'var(--text-highlight)', fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.35rem' }}>
                 ✓ Key Strengths
               </span>
               <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
@@ -218,7 +216,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
 
             {/* Weaknesses */}
             <div>
-              <span style={{ color: 'var(--color-danger)', fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.35rem' }}>
+              <span style={{ color: 'var(--text-highlight)', fontWeight: 600, fontSize: '0.85rem', display: 'block', marginBottom: '0.35rem' }}>
                 ⚠ Potential Flags
               </span>
               <ul style={{ margin: 0, paddingLeft: '1.1rem', fontSize: '0.85rem', color: 'var(--text-muted)' }}>
@@ -241,12 +239,12 @@ export default function ReportView({ reportData, onBack, API_URL }) {
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               {/* Strong Skills */}
               <div>
-                <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-success)', marginBottom: '0.5rem' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-highlight)', marginBottom: '0.5rem' }}>
                   Matching Technical Skills ({skillGap.strong_skills?.length || 0})
                 </span>
                 <div className="skills-grid">
                   {skillGap.strong_skills?.map((skill, idx) => (
-                    <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--color-success)', background: 'rgba(16, 185, 129, 0.05)' }}>
+                    <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--text-highlight)', background: 'var(--tag-bg)' }}>
                       {skill}
                     </span>
                   ))}
@@ -258,12 +256,12 @@ export default function ReportView({ reportData, onBack, API_URL }) {
 
               {/* Missing Skills */}
               <div>
-                <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-danger)', marginBottom: '0.5rem' }}>
+                <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-highlight)', marginBottom: '0.5rem' }}>
                   Missing Required Skills ({skillGap.missing_skills?.length || 0})
                 </span>
                 <div className="skills-grid">
                   {skillGap.missing_skills?.map((skill, idx) => (
-                    <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--color-danger)', background: 'rgba(239, 68, 68, 0.05)' }}>
+                    <span key={idx} className="tag" style={{ borderLeft: '2px dashed var(--border-color)', background: 'var(--tag-bg)' }}>
                       {skill}
                     </span>
                   ))}
@@ -276,12 +274,12 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               {/* Weak Skills */}
               {skillGap.weak_skills?.length > 0 && (
                 <div>
-                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--color-warning)', marginBottom: '0.5rem' }}>
+                  <span style={{ display: 'block', fontSize: '0.85rem', fontWeight: 600, color: 'var(--text-muted)', marginBottom: '0.5rem' }}>
                     Weak/Basic Skills ({skillGap.weak_skills.length})
                   </span>
                   <div className="skills-grid">
                     {skillGap.weak_skills.map((skill, idx) => (
-                      <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--color-warning)' }}>
+                      <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--border-color)' }}>
                         {skill}
                       </span>
                     ))}
@@ -381,7 +379,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
           {reportData.llm_usage && (
             <div className="card">
               <h3 className="section-title" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--color-primary)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--text-highlight)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <line x1="12" y1="1" x2="12" y2="23"></line>
                   <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                 </svg>
@@ -393,7 +391,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
                   <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                     Total Session Cost
                   </div>
-                  <div className="usage-summary-val" style={{ color: 'var(--color-success)' }}>
+                  <div className="usage-summary-val" style={{ color: 'var(--text-highlight)' }}>
                     ${reportData.llm_usage.total_cost_usd?.toFixed(6)} <span style={{ fontSize: '0.8rem', fontWeight: 'normal', color: 'var(--text-muted)' }}>USD</span>
                   </div>
                 </div>
@@ -438,7 +436,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
                         <td>{call.prompt_tokens?.toLocaleString()}</td>
                         <td>{call.candidate_tokens?.toLocaleString()}</td>
                         <td>{call.total_tokens?.toLocaleString()}</td>
-                        <td style={{ color: 'var(--color-success)', fontWeight: '600' }}>
+                        <td style={{ color: 'var(--text-highlight)', fontWeight: '600' }}>
                           ${call.cost_usd?.toFixed(6)}
                         </td>
                       </tr>

@@ -125,8 +125,8 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                       padding: '0.875rem 1rem',
                       cursor: 'pointer',
                       borderRadius: '0.5rem',
-                      border: selectedJob?.id === job.id ? '1px solid var(--color-primary)' : '1px solid var(--border-color)',
-                      background: selectedJob?.id === job.id ? 'rgba(99, 102, 241, 0.08)' : 'rgba(255, 255, 255, 0.02)',
+                      border: selectedJob?.id === job.id ? '1px solid var(--border-glow)' : '1px solid var(--border-color)',
+                      background: selectedJob?.id === job.id ? 'var(--tag-bg)' : 'var(--input-bg)',
                     }}
                     onClick={() => setSelectedJob(job)}
                   >
@@ -163,7 +163,7 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                 >
                   <div>
                     <h3 style={{ fontSize: '1.5rem', color: 'var(--text-highlight)' }}>{selectedJob.title}</h3>
-                    <span style={{ color: 'var(--color-primary)', fontWeight: 500 }}>
+                    <span style={{ color: 'var(--text-highlight)', fontWeight: 500 }}>
                       {selectedJob.parsed_json?.company || 'N/A'} • {selectedJob.parsed_json?.location || 'Remote/Hybrid'}
                     </span>
                   </div>
@@ -202,7 +202,7 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                     </h4>
                     <div className="skills-grid">
                       {selectedJob.parsed_json?.required_skills?.map((skill, idx) => (
-                        <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--color-primary)' }}>
+                        <span key={idx} className="tag" style={{ borderLeft: '2px solid var(--border-glow)' }}>
                           {skill}
                         </span>
                       ))}
