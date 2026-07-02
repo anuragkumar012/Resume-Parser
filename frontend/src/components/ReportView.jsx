@@ -49,7 +49,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', borderBottom: '1px solid var(--border-color)', paddingBottom: '1rem' }}>
         <div>
           <button className="btn btn-secondary" onClick={onBack} style={{ marginBottom: '0.75rem', padding: '0.375rem 0.75rem', fontSize: '0.85rem' }}>
-            ← Back to Dashboard
+            ← Back to Evaluations
           </button>
           <h2 style={{ fontSize: '1.75rem', color: 'var(--text-highlight)' }}>
             Candidate Scorecard: {info.name || 'Unknown Candidate'}
