@@ -3,8 +3,9 @@ import Dashboard from './components/Dashboard';
 import JobDescriptionList from './components/JobDescriptionList';
 import UploadPanel from './components/UploadPanel';
 import ReportView from './components/ReportView';
+import logoSvg from './assets/logo.svg';
 
-const API_URL = 'http://127.0.0.1:8000';
+const API_URL = `http://${window.location.hostname}:8000`;
 
 function App() {
   const [activeTab, setActiveTab] = useState('dashboard');
@@ -16,6 +17,7 @@ function App() {
   const [theme, setTheme] = useState(() => {
     return localStorage.getItem('theme') || 'dark';
   });
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const toggleTheme = () => {
     setTheme((prev) => {
@@ -102,17 +104,42 @@ function App() {
     <div className="app-container">
       {/* Header and navigation bar */}
       <header className="app-header">
-        <div className="brand">
-          <div className="brand-logo">R</div>
-          <div className="brand-text">Resume Intelligence Platform</div>
+        <div className="header-brand-bar">
+          <div className="brand">
+            <div className="brand-logo">
+              <img src={logoSvg} alt="Logo" />
+            </div>
+            <div className="brand-text">Resume Intelligence Platform</div>
+          </div>
+          <button
+            className="menu-toggle"
+            onClick={() => setIsMenuOpen((prev) => !prev)}
+            aria-label="Toggle Navigation Menu"
+          >
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              {isMenuOpen ? (
+                <>
+                  <line x1="18" y1="6" x2="6" y2="18" />
+                  <line x1="6" y1="6" x2="18" y2="18" />
+                </>
+              ) : (
+                <>
+                  <line x1="3" y1="12" x2="21" y2="12" />
+                  <line x1="3" y1="6" x2="21" y2="6" />
+                  <line x1="3" y1="18" x2="21" y2="18" />
+                </>
+              )}
+            </svg>
+          </button>
         </div>
 
-        <nav className="nav-tabs">
+        <nav className={`nav-tabs ${isMenuOpen ? 'open' : ''}`}>
           <button
             className={`tab-btn ${activeTab === 'dashboard' ? 'active' : ''}`}
             onClick={() => {
               setActiveTab('dashboard');
               fetchReports();
+              setIsMenuOpen(false);
             }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -129,6 +156,7 @@ function App() {
             onClick={() => {
               setActiveTab('jobs');
               fetchJobs();
+              setIsMenuOpen(false);
             }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -140,7 +168,10 @@ function App() {
 
           <button
             className={`tab-btn ${activeTab === 'upload' ? 'active' : ''}`}
-            onClick={() => setActiveTab('upload')}
+            onClick={() => {
+              setActiveTab('upload');
+              setIsMenuOpen(false);
+            }}
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
@@ -158,7 +189,10 @@ function App() {
               color: 'var(--theme-btn-text)',
               border: '1px solid var(--border-color)',
             }}
-            onClick={toggleTheme}
+            onClick={() => {
+              toggleTheme();
+              setIsMenuOpen(false);
+            }}
           >
             {theme === 'dark' ? '☀️ Light' : '🌙 Dark'}
           </button>

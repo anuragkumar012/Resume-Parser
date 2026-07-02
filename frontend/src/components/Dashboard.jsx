@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CustomDropdown from './CustomDropdown';
 
 export default function Dashboard({ jobs, reports, onViewReport, onFilterChange, selectedJobFilter }) {
   const [stats, setStats] = useState({
@@ -14,7 +15,7 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
   useEffect(() => {
     const totalResumes = reports.length;
     const activeJobs = jobs.length;
-    
+
     // Average ATS
     const validScores = reports.map((r) => r.ats_score).filter((s) => s >= 0);
     const averageAts = validScores.length
@@ -36,14 +37,14 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
   const filteredReports = reports.filter((report) => {
     // Filter by Job description
     const matchesJob = selectedJobFilter === '' || report.job_id === parseInt(selectedJobFilter);
-    
+
     // Search query
     const name = (report.candidate_name || '').toLowerCase();
     const email = (report.candidate_email || '').toLowerCase();
     const title = (report.job_title || '').toLowerCase();
     const query = searchQuery.toLowerCase();
     const matchesSearch = name.includes(query) || email.includes(query) || title.includes(query);
-    
+
     return matchesJob && matchesSearch;
   });
 
@@ -65,7 +66,7 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
           </div>
           <span className="stat-icon" style={{ color: 'var(--text-highlight)' }}>📄</span>
         </div>
-        
+
         {/* Stat 2 */}
         <div className="card stat-card">
           <div>
@@ -99,30 +100,51 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
       {/* Filter and search panel */}
       <div className="card" style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap', alignItems: 'center', justifyContent: 'space-between', padding: '1rem 1.5rem' }}>
         <div style={{ display: 'flex', gap: '1rem', flex: 1, minWidth: '300px' }}>
-          <div style={{ flex: 1, position: 'relative' }}>
+          <div style={{ flex: 1, position: 'relative', display: 'flex', alignItems: 'center' }}>
             <input
-              type="text"
+              type="search"
+              name="search"
+              autoComplete="off"
+              data-1p-ignore
+              data-lpignore="true"
+              data-dashlane-ignore="true"
               className="input-control"
-              placeholder="Search candidate by name, email, or role..."
-              style={{ width: '100%', paddingLeft: '1rem' }}
+              placeholder="Search by name, email or role..."
+              style={{ width: '100%', paddingLeft: '1rem', paddingRight: '2.5rem', backgroundImage: 'none' }}
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
+            <svg
+              style={{
+                position: 'absolute',
+                right: '0.875rem',
+                width: '1.1rem',
+                height: '1.1rem',
+                color: 'var(--text-muted)',
+                pointerEvents: 'none',
+              }}
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth="2"
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+              />
+            </svg>
           </div>
-          
-          <select
-            className="input-control"
+
+          <CustomDropdown
+            options={[
+              { value: '', label: 'All Job Roles' },
+              ...jobs.map((job) => ({ value: String(job.id), label: job.title })),
+            ]}
             style={{ minWidth: '220px' }}
             value={selectedJobFilter}
             onChange={(e) => onFilterChange(e.target.value)}
-          >
-            <option value="">All Job Roles</option>
-            {jobs.map((job) => (
-              <option key={job.id} value={job.id}>
-                {job.title}
-              </option>
-            ))}
-          </select>
+          />
         </div>
       </div>
 
@@ -173,7 +195,6 @@ export default function Dashboard({ jobs, reports, onViewReport, onFilterChange,
                             className="progress-bar-fill"
                             style={{
                               width: `${report.ats_score}%`,
-                              backgroundColor: scoreColor,
                             }}
                           ></div>
                         </div>

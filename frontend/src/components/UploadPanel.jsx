@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import CustomDropdown from './CustomDropdown';
 
 export default function UploadPanel({ jobs, onAnalysisComplete, API_URL }) {
   const [selectedJobId, setSelectedJobId] = useState('');
@@ -139,20 +140,19 @@ export default function UploadPanel({ jobs, onAnalysisComplete, API_URL }) {
       <form onSubmit={handleSubmit}>
         <div className="form-group">
           <label className="form-label">Select Target Job Description</label>
-          <select
-            className="input-control"
+          <CustomDropdown
+            options={[
+              { value: '', label: '-- Choose Job Role --' },
+              ...jobs.map((job) => ({
+                value: String(job.id),
+                label: `${job.title} (${job.parsed_json?.company || 'Local Database'})`,
+              })),
+            ]}
+            style={{ width: '100%' }}
             value={selectedJobId}
             onChange={(e) => setSelectedJobId(e.target.value)}
             disabled={isLoading}
-            required
-          >
-            <option value="">-- Choose Job Role --</option>
-            {jobs.map((job) => (
-              <option key={job.id} value={job.id}>
-                {job.title} ({job.parsed_json?.company || 'Local Database'})
-              </option>
-            ))}
-          </select>
+          />
           {jobs.length === 0 && (
             <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)' }}>
               No Job Descriptions found. Please add a Job Role first.
@@ -218,7 +218,7 @@ export default function UploadPanel({ jobs, onAnalysisComplete, API_URL }) {
                     display: 'flex',
                     justifyContent: 'space-between',
                     alignItems: 'center',
-                    background: 'rgba(255,255,255,0.03)',
+                    background: 'var(--input-bg)',
                     padding: '0.5rem 0.75rem',
                     borderRadius: '4px',
                     border: '1px solid var(--border-color)',

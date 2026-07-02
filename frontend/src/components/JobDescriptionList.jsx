@@ -175,7 +175,7 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                 <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
                   {/* Experience and Education requirements */}
                   <div className="grid-cols-2">
-                    <div style={{ background: 'rgba(255,255,255,0.01)', padding: '0.875rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                    <div style={{ background: 'var(--input-bg)', padding: '0.875rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                       <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block' }}>
                         Required Work Experience
                       </span>
@@ -185,7 +185,7 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                           : 'Not Specified'}
                       </strong>
                     </div>
-                    <div style={{ background: 'rgba(255,255,255,0.01)', padding: '0.875rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                    <div style={{ background: 'var(--input-bg)', padding: '0.875rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                       <span style={{ fontSize: '0.8rem', color: 'var(--text-muted)', display: 'block' }}>
                         Min Education Level
                       </span>
@@ -233,7 +233,7 @@ export default function JobDescriptionList({ jobs, onJobAdded, API_URL }) {
                     </h4>
                     <div
                       style={{
-                        background: 'rgba(0,0,0,0.2)',
+                        background: 'var(--input-bg)',
                         padding: '1rem',
                         borderRadius: '0.5rem',
                         fontSize: '0.875rem',

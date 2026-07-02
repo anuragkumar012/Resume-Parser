@@ -113,7 +113,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.skill_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.skill_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.skill_match}%` }}></div>
             </div>
           </div>
 
@@ -124,7 +124,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.experience_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.experience_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.experience_match}%` }}></div>
             </div>
           </div>
 
@@ -135,7 +135,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.education_match)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.education_match}%`, backgroundColor: 'var(--text-highlight)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.education_match}%` }}></div>
             </div>
           </div>
 
@@ -146,7 +146,7 @@ export default function ReportView({ reportData, onBack, API_URL }) {
               <strong style={{ color: 'var(--text-highlight)' }}>{Math.round(reportData.semantic_score)}%</strong>
             </div>
             <div className="progress-bar-container">
-              <div className="progress-bar-fill" style={{ width: `${reportData.semantic_score}%`, backgroundColor: 'var(--text-highlight)' }}></div>
+              <div className="progress-bar-fill" style={{ width: `${reportData.semantic_score}%` }}></div>
             </div>
           </div>
         </div>
@@ -294,19 +294,19 @@ export default function ReportView({ reportData, onBack, API_URL }) {
             <h3 className="section-title">Work Experience Breakdown</h3>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
               <div className="grid-cols-3">
-                <div style={{ background: 'rgba(255,255,255,0.01)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                <div style={{ background: 'var(--input-bg)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Total Experience</span>
                   <strong style={{ fontSize: '1.1rem', color: 'var(--text-highlight)' }}>
                     {expAnalysis.total_experience_years ? `${expAnalysis.total_experience_years.toFixed(1)} Yrs` : 'N/A'}
                   </strong>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.01)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                <div style={{ background: 'var(--input-bg)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Relevant Experience</span>
                   <strong style={{ fontSize: '1.1rem', color: 'var(--text-highlight)' }}>
                     {expAnalysis.relevant_experience_years ? `${expAnalysis.relevant_experience_years.toFixed(1)} Yrs` : 'N/A'}
                   </strong>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.01)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
+                <div style={{ background: 'var(--input-bg)', padding: '0.75rem', borderRadius: '4px', border: '1px solid var(--border-color)' }}>
                   <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', display: 'block' }}>Average Job Tenure</span>
                   <strong style={{ fontSize: '1.1rem', color: 'var(--text-highlight)' }}>
                     {expAnalysis.average_job_duration_months
