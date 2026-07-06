@@ -51,3 +51,13 @@ class MatchReportDB(Base):
     # Relationships
     job = relationship("JobDescriptionDB", back_populates="reports")
     candidate = relationship("CandidateDB", back_populates="reports")
+
+
+class UserDB(Base):
+    __tablename__ = "users"
+
+    id = Column(Integer, primary_key=True, autoincrement=True)
+    email = Column(String(255), unique=True, index=True, nullable=False)
+    password = Column(String(255), nullable=False)  # Hashed (SHA-256)
+    role = Column(String(50), nullable=False)       # "candidate" or "company"
+    created_at = Column(DateTime(timezone=True), server_default=func.now())

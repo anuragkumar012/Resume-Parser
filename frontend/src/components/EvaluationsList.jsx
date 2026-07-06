@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import CustomDropdown from './CustomDropdown';
 
-export default function EvaluationsList({ jobs, reports, onViewReport, onFilterChange, selectedJobFilter, onDeleteReport }) {
+export default function EvaluationsList({ jobs, reports, onViewReport, onFilterChange, selectedJobFilter, onDeleteReport, userRole }) {
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEligibilityFilter, setSelectedEligibilityFilter] = useState('');
   const [selectedScoreFilter, setSelectedScoreFilter] = useState('');
@@ -242,8 +242,20 @@ export default function EvaluationsList({ jobs, reports, onViewReport, onFilterC
                       </button>
                       <button
                         className="btn btn-danger"
-                        style={{ padding: '0.375rem 0.75rem', fontSize: '0.8rem' }}
-                        onClick={() => onDeleteReport(report.id, report.candidate_name)}
+                        style={{
+                          padding: '0.375rem 0.75rem',
+                          fontSize: '0.8rem',
+                          opacity: userRole !== 'company' ? 0.35 : 1,
+                          cursor: userRole !== 'company' ? 'not-allowed' : 'pointer'
+                        }}
+                        onClick={() => {
+                          if (userRole !== 'company') {
+                            alert("Action Unauthorized: Deleting candidate evaluations is restricted to Company recruiters.");
+                            return;
+                          }
+                          onDeleteReport(report.id, report.candidate_name);
+                        }}
+                        title={userRole === 'company' ? `Delete evaluation record` : `Delete disabled (Company only)`}
                       >
                         Delete
                       </button>

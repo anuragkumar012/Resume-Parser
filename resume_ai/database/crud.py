@@ -137,3 +137,31 @@ def delete_match_report(db: Session, report_id: int) -> bool:
         return True
     return False
 
+
+import hashlib
+
+def hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode('utf-8')).hexdigest()
+
+def get_user_by_email(db: Session, email: str):
+    if not email:
+        return None
+    return db.query(models.UserDB).filter(models.UserDB.email == email.strip().lower()).first()
+
+def create_user(db: Session, email: str, password_raw: str, role: str):
+    # Check if user already exists
+    existing = get_user_by_email(db, email)
+    if existing:
+        return existing
+
+    hashed_pwd = hash_password(password_raw)
+    db_user = models.UserDB(
+        email=email.strip().lower(),
+        password=hashed_pwd,
+        role=role
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+

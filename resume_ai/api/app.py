@@ -54,11 +54,74 @@ app.add_middleware(
 def on_startup():
     logger.info("Initializing database tables...")
     init_db()
+    
+    # Seed default sandbox users
+    db = next(get_db())
+    try:
+        from resume_ai.database.models import UserDB
+        
+        # Clean up old admin user
+        admin_user = db.query(UserDB).filter(UserDB.email == "admin@resumeintel.com").first()
+        if admin_user:
+            db.delete(admin_user)
+            db.commit()
+            logger.info("Removed old admin user.")
+            
+        # Seed candidate user
+        candidate_user = db.query(UserDB).filter(UserDB.email == "candidate@resumeintel.com").first()
+        if not candidate_user:
+            crud.create_user(db, email="candidate@resumeintel.com", password_raw="candidate123", role="candidate")
+            logger.info("Candidate user seeded successfully.")
+            
+        # Seed company user
+        company_user = db.query(UserDB).filter(UserDB.email == "hr@company.com").first()
+        if not company_user:
+            crud.create_user(db, email="hr@company.com", password_raw="company123", role="company")
+            logger.info("Company user seeded successfully.")
+            
+    except Exception as e:
+        logger.error(f"Failed to seed default sandbox users: {e}")
+    finally:
+        db.close()
 
 
 @app.get("/")
 def read_root():
     return {"status": "online", "message": "Resume Intelligence Platform API is running."}
+
+
+class LoginRequest(BaseModel):
+    email: str
+    password: str
+    role: str
+
+
+@app.post("/api/login", summary="User Login Authentication")
+def api_login(request: LoginRequest, db: Session = Depends(get_db)):
+    logger.info(f"Login attempt: {request.email} as {request.role}")
+    user = crud.get_user_by_email(db, request.email)
+    if not user:
+        raise HTTPException(status_code=401, detail="User account not found.")
+    
+    # Verify hashed password
+    hashed_input = crud.hash_password(request.password)
+    if user.password != hashed_input:
+        raise HTTPException(status_code=401, detail="Incorrect password.")
+    
+    # Verify role match
+    if user.role != request.role:
+        raise HTTPException(
+            status_code=401,
+            detail=f"Access denied. User role does not match request ({request.role})."
+        )
+    
+    return {
+        "status": "success",
+        "user": {
+            "email": user.email,
+            "role": user.role
+        }
+    }
 
 @app.post("/parse_resume", response_model=ResumeData, summary="Parse a PDF Resume")
 async def api_parse_resume(file: UploadFile = File(...)):
